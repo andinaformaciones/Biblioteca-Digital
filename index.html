@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Biblioteca Digital Abierta - Andina Formaciones</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: white;
+      background: linear-gradient(135deg, #10243d, #3b4b63, #8b1e3f);
+      background-size: 300% 300%;
+      animation: fondoAnimado 20s ease infinite;
+    }
+
+    @keyframes fondoAnimado {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    header {
+      text-align: center;
+      padding: 50px 20px 20px;
+      animation: aparecer 1.5s ease forwards;
+      opacity: 0;
+    }
+
+    @keyframes aparecer {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    header img {
+      height: 70px;
+      display: block;
+      margin: 0 auto 15px;
+    }
+
+    header h1 {
+      font-size: 2em;
+      font-weight: 700;
+      margin: 0;
+      color: #fff;
+    }
+
+    .contenedor {
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+      padding: 20px;
+    }
+
+    /* === NUEVO ESTILO SIN FONDO BLANCO === */
+    .buscador {
+      padding: 0;
+      background: none;
+      box-shadow: none;
+    }
+
+    .buscador input {
+      width: 100%;
+      padding: 12px 16px;
+      font-size: 15px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-bottom: 25px;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 10px;
+      padding: 14px 16px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+      width: 250px;
+      cursor: pointer;
+      border-top: 5px solid #8b1e3f;
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover { transform: translateY(-5px); }
+
+    .thumb {
+      width: 55px;
+      height: 70px;
+      border-radius: 6px;
+      color: #fff;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+
+    .thumb.pdf { background: linear-gradient(180deg, #7b1f31, #a33c50); }
+    .thumb.video { background: linear-gradient(180deg, #1e5799, #2989d8); }
+
+    .meta h3 { margin: 0; font-size: 15px; color: #0f2d47; }
+    .meta p { margin: 3px 0 0; color: #555; font-size: 13px; }
+
+    /* === MODAL === */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+      z-index: 1000;
+    }
+
+    .modal.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .modal-content {
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      width: 90%;
+      max-width: 900px;
+      box-shadow: 0 0 40px rgba(0,0,0,0.5);
+      animation: aparecerModal 0.4s ease;
+    }
+
+    @keyframes aparecerModal {
+      from { transform: scale(0.95); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .modal-header {
+      background: #7b1f31;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+    }
+
+    .modal-header h3 { margin: 0; font-size: 1rem; }
+
+    .modal-header button {
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    .modal iframe {
+      width: 100%;
+      height: 80vh;
+      border: none;
+      display: block;
+    }
+
+    footer {
+      margin-top: 60px;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #e2e8f0;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="https://i.ibb.co/9mBBWjgZ/Dise-o-sin-t-tulo-3-removebg-preview.png" alt="Logo Andina Formaciones" />
+    <h1>Biblioteca Digital Abierta</h1>
+    <p>Visualiza y lee documentos o videos compartidos</p>
+  </header>
+
+  <div class="contenedor">
+    <div class="buscador">
+      <input type="text" id="filterInput" placeholder="Buscar por título..." />
+      <div class="grid" id="libraryGrid"></div>
+    </div>
+  </div>
+
+  <div class="modal" id="modalViewer">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modalTitle"></h3>
+        <div>
+          <button id="openDrive">Abrir en Drive ↗</button>
+          <button id="closeModal">Cerrar ✕</button>
+        </div>
+      </div>
+      <iframe id="modalIframe" allow="autoplay"></iframe>
+    </div>
+  </div>
+
+  <footer>© 2026 Andina Formaciones — Biblioteca Digital Abierta</footer>
+
+  <script>
+    const files = [
+      { id: '1n-aTRB9FcE317bUKrtCGq_bQKg7_g7yT', title: 'Djuna Wojton Sanación Kármica', type: 'pdf' },
+      { id: '1PAZbFtCp0O6ZT4oimjFwhNkWag4m7BCi', title: 'La Medicina de la Energía', type: 'pdf' },
+      { id: '1uLamsp39q514oCab_ZbHwFUkHQyV_dFS', title: 'Viaje al universo Nauronal', type: 'pdf' },
+      { id: '1hixShYtwYZtTHp1OcE86cklAs0oIrIWE', title: 'Visión cuántica del Transgeneracional', type: 'pdf' },
+      { id: '1Ecx-Xos1LBJZNuh4EsAhOTbafM5GAJxt', title: 'Libro de los Mediums', type: 'pdf' },
+      { id: '1Ow1Y3p8KM8fXDzNB4TUrAxlYFAvYle5U', title: 'Aprenda astrologia', type: 'pdf' },
+      { id: '1Lgvp3y1n1JJZDrnsncwMJeM7V2Nt9xzZ', title: 'Mindfulness para adultos con TDAH', type: 'pdf' },
+      { id: '1MlbUDTfHD7qMH-QHjgAs4eWAi_TAlSTo', title: 'Meditación y Mindfulness. 16 ejercicios prácticos para tu día', type: 'pdf' },
+      { id: '1MLg8aWniVOozUxnvuLjVoBEGpsfQWYPT', title: '12 reglas para vivir. Un antídoto al caos', type: 'pdf' },
+      { id: '1VD5Hx1o_QJRo55Q7R3IUamge0CdJVyGc', title: 'Arbol transgeneracional- Marta Salva', type: 'pdf' },
+      { id: '1WMyF8-4gd6_EMrC6U8khxVO4_MVYBgva', title: 'criar un genio', type: 'pdf' },
+      { id: '1y8I9WgP980uKw4XcFo4AwoZwjapz8_iA', title: 'Compartir "EL PODER DE TU MENTE SUBCONSCIENTE"', type: 'pdf' },
+      { id: '1NBHgWwMt9QNi8rvc7C6LjhScRTgsvTcJ', title: 'Compartir "HABITOS ATOMICOS JAMES CLEAR', type: 'pdf' },
+      { id: '1Pg-fkq6wRJpo9o8h6dVuWrvbilMZNjhn', title: 'La Moda Negra. duelo, melancolía, depresión', type: 'pdf' },
+      { id: '10lIH2atZxGAQXD_Pm1MlhV891Lqn9j93', title: 'Terapia Sanadora Holistica', type: 'pdf' },
+      { id: '1HIa4yxxc-9kUPkMfCuCB3FQza_yFFIds', title: '11 pendulo hebreo 407 etiquetas', type: 'pdf' },
+      { id: '1XHdvXuUQXW8nBnXlm0wk8AUGj4ybxiZs', title: 'Psicología Compartir "10 Ideas Clave. Educación emocional ', type: 'pdf' },
+      { id: '1-4qMoAwzBjBzFj6piu0lGXpu2-i-PKs9', title: 'Cómo Analizar a las Personas con Psicología', type: 'pdf' },
+      { id: '1QdtkE3H9EkLriUl3TmGsSChX9aEbv39K', title: 'Psicología Cómo Detectar Mentiras', type: 'pdf' },
+      { id: '1jVcuuYIRdMzIbYr7vNpPvvXcB5RzTql5', title: 'Psicología Cómo estimular el cerebro infantil', type: 'pdf' },
+      { id: '1zcn9tm4QaSLkhMdryUoyvs-taZdPtZjM', title: 'Desarrolla una mente prodigiosa Psicologia', type: 'pdf' },
+      { id: '128h5A2HiZNblmyrYY3Fz2fclBCrLRB7i', title: 'Educación Emocional y Apego', type: 'pdf' },
+      { id: '1zCcetA_i3sIUI9cyyxR_RLRaOlg0mE7F', title: 'Educar las Emociones en la Primera Infancia Psicología', type: 'pdf' },
+      { id: '1oowfl2cFYQLe_6D_C51A5UZwqo8CW5DG', title: 'Inteligencia Emocional Psicología', type: 'pdf' },
+      { id: '1hJIs7TZYJ-_4I4TyyjimuU5y2VcDFSBD', title: 'La educación emocional en la escuela Psicología', type: 'pdf' },
+      { id: '1qAlXhA0lyuq6WC5778yyUDZQoVXk1t8h', title: 'Terapia Cognitivo Conductual Psicología', type: 'pdf' },
+      { id: '1PZzeLyJ8-yC8yXVtVQbQKfqP24f_fn6R', title: 'Una Vida sin salud Mental Psicología', type: 'pdf' },
+      { id: '1TQnsPUb37ft_N3NOunnIYBsjvCEt5u9j', title: 'Tratado de demonología libro', type: 'pdf' },
+      { id: '1B2UK7f8W06rKQvdo-Op1JvfkHxeGCmxy', title: 'MANUAL PRACTICO PENDULO HEBREO FERNANDO TORRES', type: 'pdf' },
+      { id: '18vwjvKSBPXb4W60LMBupLXczltvL5Sku', title: 'El correcto uso del péndulo y la pirámide', type: 'pdf' },
+      { id: '1UnPO9dHQD06-IzhETl7cfSFtPGrBQ9H', title: 'Manual de digitopuntura', type: 'pdf' },
+      { id: '14DzI3OS33RAzm_aArbrbPY_9gjJ0EN5n', title: 'Cómo Analizar a las Personas con Psicología', type: 'pdf' },
+      { id: '1yd0nkKbwy5QcmikddQovGTfUE-_vJD3N', title: 'Curso Básico de Reiki autor Adriana Testa', type: 'pdf' },
+      { id: '1YDcs8PbxV0weL-xp1Thj-etUho5HGod1', title: 'MANUAL DE NÍVEL 1 DE REIKI', type: 'pdf' },
+      { id: '1-maF5ISwcDiBRNcpwi2Bqhh4lPyxkxi2', title: 'MUCHAS VIDAS MUCHOS MAESTROS', type: 'pdf' },
+      { id: '1RiFdBTdlfzzCErhZuV44sQCwLXLElEPu', title: 'Muchos cuerpos una misma alma', type: 'pdf' },
+      { id: '1btdGera-SUG69owTU5IcLZEK0BW0j6Bo', title: ' Psicogenealogia y Biodescodificacion', type: 'pdf' },
+      { id: '1H7DdEdwKFK3UetCs31u1SXSRsnJfJiRa', title: ' Psicogenealogia y Biodescodificacion.pdf', type: 'pdf' },
+      { id: '1FKq1NXR8AJ8kAkNY1TNpRrKfAHIebCzu', title: 'Abuso Sexual', type: 'pdf' },
+      { id: '1HbSFHBHfWaWSm0i4gr5lkSroObrEcaiL', title: 'Biodescodificación el código secreto de los sintomas.pdf', type: 'pdf' },
+      { id: '1vriX4HBUVRnIRPnRKQh1Ix04Vz6pTyhD', title: 'Biodescodificación', type: 'pdf' },
+      { id: '1bbtomVWnWIhvGLhV87qvxoPqOrpGeyFY', title: 'caroline myss  la medicina de la  energia', type: 'pdf' },
+      { id: '1gTrSTiIC7_WRtCNT1eZdjKs9GBpMy5gM', title: 'compilación códigos y ejercicios canalizados por agesta al 1 marzo 20161.pdf', type: 'pdf' },
+      { id: '1zE2f5MBBCw673BtJMPflydVhfEPZB5op', title: 'Corbera Enric - Biodescodificacion - El Código Secreto Del Sintoma', type: 'pdf' },
+      { id: '1S7b98fRoE_Lt7AbNso-_0bNu7xF7zPUO', title: 'Corbera, Enric -  Tratado en Bioneuroemocion, Bases biolgicas para el Cambio de Conciencia', type: 'pdf' },
+      { id: '1LIU1WhXvF3zY_D5fanK6fBnZYfdCHR6A', title: 'Corbera, Enric - Diccionario Bio Emocional 2016.pdf', type: 'pdf' },
+      { id: '1Hl_U6ZRbZa1v956U9jL66s_qlbt5k58O', title: 'Corbera, Enric - El Arte de Desaprender, La esencia de la Bioneuroemoción', type: 'pdf' },
+      { id: '129_ZsG1OW8uMcJm5NpCK_CRJkfijxLNi', title: 'Corbera, Enric - Lecciones Básicas de Bioneuroemoción', type: 'pdf' },
+      { id: '1Gc0aw6Yo8OfJz-ry7Ita5_ZgsKX4W4bV', title: 'Curación por el Pensamiento Dr. Escudero', type: 'pdf' },
+      { id: '1hpYEVCKKhJV1f4x2AY7-R4Jv2JJM52gg', title: 'Dahlke R. - La Enfermedad Como Simbolo', type: 'pdf' },
+      { id: '1TUeXMNCKefsPJCrYIKC5b9ts7YfVsA4h', title: 'DICCIONARIO Biodescodificacion', type: 'pdf' },
+      { id: '1qfMmsz7pHGKftQEW9p4aqLXQIm7-KO4v', title: 'El arte de desaprender La esencia de la bio-neuro', type: 'pdf' },
+      { id: '11E1MHQ669YSi4-34o1tb2_kvA_Hkc1gw', title: 'EL-GRAN DICIONARIO DE LAS DOLENCIAS Y ENFERMEDADES', type: 'pdf' },
+      { id: '1qukxiXIw4TiF2kdVsQk2_Lbt3iFKVrCd', title: 'El libro azul de la decodificación biológica enrique bouron', type: 'pdf' },
+      { id: '1G6mLxxF51uu6ZHQSjjVXigyaSEq3W6vW', title: 'Enric Corbera El Observador en BioNeuroEmocion', type: 'pdf' },
+      { id: '1JuQMDgqnZeNZJzsGuerv1H2MMZOWoGLe', title: 'LIBRO LA DESCODIFICACIÓN BIOLÓGICA', type: 'pdf' },
+      { id: '1jQPOyQ25KHDKAW3sETQfEC4XEEm9cWvH', title: 'MENTE CUERPO ALMA  Descodificación  PsicoNeuroBiológica', type: 'pdf' },
+      { id: '1djPn09X35zcadKipBe0P2-Zqlua2NO8j', title: 'Nathalie Zammateo - El impacto de las emociones en el  ADN', type: 'pdf' },
+      { id: '1VoVs24vb81Sa2PZ2WuI__H1wTa7sl0fF', title: 'Schellhammer Eduard - El Misterio De La Energia Psiquica', type: 'pdf' },
+      { id: '1-RfFhfESzvs-M86iGM5XMr4e9cCEhwQm', title: 'Fundamentos de la constelación familiar', type: 'pdf' },
+      { id: '1m3vL0WXIZXPUMfx6OWBJuUmmF9NtOZWL', title: 'MANUAL PRÁCTICO DEN CONSTELACIONES FAMILIARES DE CONSTELACIONES FAMILIARES', type: 'pdf' },
+      { id: '1vh6pEhTKHGGc1L1XTG_DbmoBmKz5cEXS', title: 'Mis antepasados me duelen', type: 'pdf' },
+      { id: '1-qYf64abt6bo2WMGH12Cbfuipy7XDreI', title: 'Constelaciones Familiares. Hellinger Órdenes del Amor.pdf', type: 'pdf' },
+      { id: '15HZGc_WeZwzdVCNLh7GHB8OoAaaul4pU', title: 'Movimientos Esenciales y Prácticas Sanadoras de las Constelaciones Familiares', type: 'pdf' },
+      { id: '1BLqOw02b_VnySrOgqpWlrVKy3WvyPltk', title: 'Bert Hellinger - El rio nunca mira atrás (Ursula Franke) - Constelaciones.pdf', type: 'pdf' },
+      { id: '1kerFPwk8Lx4hVWPOsBuaR6IgSSsIimYV', title: 'Teoría Completa para la Formación de Constelaciones familiares Aplicadas a la consulta Individual', type: 'pdf' },
+      { id: '1KW_NxFBe-Vk1DhrOVDIWfaGApmC1x0el', title: 'Constelaciones Familiares Manual Completo', type: 'pdf' },
+      { id: '15SKdhT-nreekP4_xWB3N2MzmmBAshP0T', title: 'Introducción a las constelaciones familiares', type: 'pdf' },
+      { id: '1ldchJTPj3Qs9Y_bG9i8JYhpEpVLPKX48', title: '¿Por que fracasamos?  Bert Hellinger Constelaciones Familiares.', type: 'pdf' },
+      { id: '1whyVecA3Z_rVBaMx0lZy3VEV0nPn75zG', title: 'Lealtades familiares', type: 'pdf' },
+      { id: '13kqCHx3n-JeWJ9-3iUn9K3VWm7ojdKLh', title: 'Tarot y constelaciones familiares', type: 'pdf' },
+      { id: '1pKm_IZSL5Z8Dadl18bdadh6l6n-BnBLg', title: 'constelaciones Familiares Re-nacer', type: 'pdf' },
+      { id: '14P8-EvaW9b6wUdYNDsULnPmlm5YO7a1M', title: 'Constelaciones Familiares -Fundamentación Sistemática- Bert Hellinger', type: 'pdf' },
+      { id: '1Tu2qYCu94CM9NmWQQpKnMlgLkQjWl7Rf', title: 'Implicaciones sitémicas Constelaciones Familiares.', type: 'pdf' },
+      { id: '1won1pl7vYUrBZJCJ9fsrGXE23GthY5kj', title: 'Mirar el Alma de los NIños Constelaciones familiares', type: 'pdf' },
+      { id: '1GufeAbnLj_M9_e0wW6c0iz0x9viHeeyo', title: 'Trauma, vínculo y constelaciones familiares (Spanish Edition)', type: 'pdf' },
+      { id: '1_HNnm_DBcJZlq96Awa4FLnGi4JVq369X', title: 'Constelaciones familiares para el amor y las parejas (Spanish Edition)', type: 'pdf' },
+      { id: '102Ui_5oDXZAwwIxY2tS6gqOSzIrVhy7R', title: 'Ingala Robl - Secretos de familia', type: 'pdf' },
+      { id: '19eOThuM1ZhXuR5g3XBObwOoqfEef_tmd', title: 'Constelar la enfermedad', type: 'pdf' },
+      { id: '1-UEu_ZAxi7CQAwlbdPQBecx5MMZYPTDl', title: 'Muñecos, metáforas y soluciones', type: 'pdf' },
+      { id: '19PBPhhZ0Upc9u90VHZVV1TpXuZ6l2L48', title: 'Champetier, Brigitte Las frases sanadoras', type: 'pdf' },
+      { id: '1yB1ab15c5YAokswIRAX-pqMGNXN--2bd', title: 'Espiritismo', type: 'pdf' },
+      { id: '1KXpr25zf8L03_oxsyrO_BRMWxFn4uP5c', title: 'Tratado de Demonología', type: 'video' }
+    ];
+
+    const grid = document.getElementById('libraryGrid');
+    const filterInput = document.getElementById('filterInput');
+    const modal = document.getElementById('modalViewer');
+    const iframe = document.getElementById('modalIframe');
+    const modalTitle = document.getElementById('modalTitle');
+    const openDrive = document.getElementById('openDrive');
+    const closeModal = document.getElementById('closeModal');
+
+    function makeCard(file) {
+      const el = document.createElement('div');
+      el.className = 'card';
+      el.innerHTML = `
+        <div class="thumb ${file.type}">${file.type === 'pdf' ? 'PDF' : 'VIDEO'}</div>
+        <div class="meta">
+          <h3>${file.title}</h3>
+          <p>Vista previa embebida de Google Drive</p>
+        </div>`;
+      el.addEventListener('click', () => openViewer(file));
+      return el;
+    }
+
+    function renderList(list) {
+      grid.innerHTML = '';
+      if (!list.length) {
+        grid.innerHTML = '<p style="color:#ccc;text-align:center;">No se encontraron resultados.</p>';
+        return;
+      }
+      for (const f of list) grid.appendChild(makeCard(f));
+    }
+
+    renderList(files);
+
+    filterInput.addEventListener('input', e => {
+      const q = e.target.value.trim().toLowerCase();
+      const filtered = files.filter(f => f.title.toLowerCase().includes(q));
+      renderList(filtered);
+    });
+
+    function openViewer(file) {
+      modal.classList.add('active');
+      iframe.src = `https://drive.google.com/file/d/${file.id}/preview`;
+      modalTitle.textContent = file.title;
+      openDrive.onclick = () => window.open(`https://drive.google.com/file/d/${file.id}/view`, '_blank');
+    }
+
+    closeModal.onclick = () => {
+      modal.classList.remove('active');
+      iframe.src = '';
+    };
+
+    modal.addEventListener('click', e => {
+      if (e.target === modal) closeModal.click();
+    });
+  </script>
+</body>
+</html>
