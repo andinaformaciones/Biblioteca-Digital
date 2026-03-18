@@ -1,238 +1,203 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>Biblioteca Digital Abierta - Andina Formaciones</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Biblioteca Digital Abierta - Andina Formaciones</title>
 
-    <!-- Etiquetas Open Graph mejoradas para vista previa en redes sociales -->
-    <meta property="og:title" content="Biblioteca Digital Abierta - Andina Formaciones”" />
-    <meta property="og:description" content="Sitio web de Difusión Académica Holística- Editorial Andina Formaciones-" />
-    <meta property="og:image" content="https://i.ibb.co/7Jzwfdtk/Copia-de-A-adir-un-t-tulo.jpg" />
-    <meta property="og:image:type" content="https://i.ibb.co/7Jzwfdtk/Copia-de-A-adir-un-t-tulo.jpg" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:url" content="https://andinaformaciones.github.io/Biblioteca-Digital/" />
-    <meta property="og:type" content="article" />
-    <meta property="og:locale" content="es_ES" />
-    <meta property="og:site_name" content="Asociación de Formación Holística Andina" />
+<style>
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: white;
+  background: linear-gradient(135deg, #10243d, #3b4b63, #8b1e3f);
+  background-size: 300% 300%;
+  animation: fondoAnimado 20s ease infinite;
+}
 
-    <!-- Twitter Cards -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Biblioteca Digital Abierta - Andina Formaciones”" />
-    <meta name="twitter:description" content="Sitio web de Difusión Académica Holística- Editorial Andina Formaciones-" />
-    <meta name="twitter:image" content="https://i.ibb.co/7Jzwfdtk/Copia-de-A-adir-un-t-tulo.jpg" />
+@keyframes fondoAnimado {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Georgia&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+/* BOTÓN VOLVER */
+.boton-volver {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  text-decoration: none;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 8px 14px;
+  border-radius: 8px;
+  backdrop-filter: blur(6px);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255,255,255,0.15);
+  z-index: 10;
+}
 
+.boton-volver:hover {
+  background: rgba(255,255,255,0.18);
+  transform: translateX(-3px);
+}
 
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      color: white;
-      background: linear-gradient(135deg, #10243d, #3b4b63, #8b1e3f);
-      background-size: 300% 300%;
-      animation: fondoAnimado 20s ease infinite;
-    }
+/* HEADER */
+header {
+  text-align: center;
+  padding: 50px 20px 20px;
+  animation: aparecer 1.5s ease forwards;
+  opacity: 0;
+}
 
-    @keyframes fondoAnimado {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
+@keyframes aparecer {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
-    header {
-      text-align: center;
-      padding: 50px 20px 20px;
-      animation: aparecer 1.5s ease forwards;
-      opacity: 0;
-    }
+header img {
+  height: 70px;
+  margin-bottom: 15px;
+}
 
-    @keyframes aparecer {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+/* CONTENIDO */
+.contenedor {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 20px;
+}
 
-    header img {
-      height: 70px;
-      display: block;
-      margin: 0 auto 15px;
-    }
+/* BUSCADOR ORIGINAL */
+.buscador input {
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 15px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  margin-bottom: 25px;
+}
 
-    header h1 {
-      font-size: 2em;
-      font-weight: 700;
-      margin: 0;
-      color: #fff;
-    }
+/* GRID */
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
 
-    .contenedor {
-      max-width: 900px;
-      margin: 0 auto;
-      text-align: center;
-      padding: 20px;
-    }
+/* CARD */
+.card {
+  background: white;
+  border-radius: 10px;
+  padding: 14px;
+  width: 250px;
+  cursor: pointer;
+  border-top: 5px solid #8b1e3f;
+}
 
-    /* === NUEVO ESTILO SIN FONDO BLANCO === */
-    .buscador {
-      padding: 0;
-      background: none;
-      box-shadow: none;
-    }
+.thumb {
+  width: 55px;
+  height: 70px;
+  border-radius: 6px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-    .buscador input {
-      width: 100%;
-      padding: 12px 16px;
-      font-size: 15px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      margin-bottom: 25px;
-      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
+.thumb.pdf { background: #8b1e3f; }
+.thumb.video { background: #1e5799; }
 
-    .grid {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 20px;
-    }
+.meta h3 { color: #0f2d47; margin: 0; font-size: 15px; }
+.meta p { color: #555; font-size: 13px; }
 
-    .card {
-      background: white;
-      border-radius: 10px;
-      padding: 14px 16px;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
-      width: 250px;
-      cursor: pointer;
-      border-top: 5px solid #8b1e3f;
-      transition: transform 0.3s ease;
-    }
+/* MODAL */
+.modal {
+  position: fixed;
+  top:0;left:0;
+  width:100%;height:100%;
+  background: rgba(0,0,0,0.8);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  opacity:0;
+  pointer-events:none;
+  transition:0.4s;
+}
 
-    .card:hover { transform: translateY(-5px); }
+.modal.active {
+  opacity:1;
+  pointer-events:all;
+}
 
-    .thumb {
-      width: 55px;
-      height: 70px;
-      border-radius: 6px;
-      color: #fff;
-      font-weight: bold;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 8px;
-      font-size: 14px;
-    }
+.modal-content {
+  background:#fff;
+  width:90%;
+  max-width:900px;
+  border-radius:10px;
+}
 
-    .thumb.pdf { background: linear-gradient(180deg, #7b1f31, #a33c50); }
-    .thumb.video { background: linear-gradient(180deg, #1e5799, #2989d8); }
+.modal iframe {
+  width:100%;
+  height:80vh;
+  border:none;
+}
 
-    .meta h3 { margin: 0; font-size: 15px; color: #0f2d47; }
-    .meta p { margin: 3px 0 0; color: #555; font-size: 13px; }
+.modal-header {
+  background:#7b1f31;
+  color:white;
+  display:flex;
+  justify-content:space-between;
+  padding:10px;
+}
 
-    /* === MODAL === */
-    .modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.8);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.4s ease;
-      z-index: 1000;
-    }
-
-    .modal.active {
-      opacity: 1;
-      pointer-events: all;
-    }
-
-    .modal-content {
-      background: #fff;
-      border-radius: 10px;
-      overflow: hidden;
-      width: 90%;
-      max-width: 900px;
-      box-shadow: 0 0 40px rgba(0,0,0,0.5);
-      animation: aparecerModal 0.4s ease;
-    }
-
-    @keyframes aparecerModal {
-      from { transform: scale(0.95); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
-    }
-
-    .modal-header {
-      background: #7b1f31;
-      color: white;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 20px;
-    }
-
-    .modal-header h3 { margin: 0; font-size: 1rem; }
-
-    .modal-header button {
-      background: none;
-      border: none;
-      color: white;
-      cursor: pointer;
-      font-size: 0.9rem;
-    }
-
-    .modal iframe {
-      width: 100%;
-      height: 80vh;
-      border: none;
-      display: block;
-    }
-
-    footer {
-      margin-top: 60px;
-      text-align: center;
-      font-size: 0.9rem;
-      color: #e2e8f0;
-    }
-  </style>
+/* RESPONSIVE */
+@media (max-width:600px){
+  .boton-volver {
+    font-size:13px;
+    padding:6px 10px;
+  }
+}
+</style>
 </head>
+
 <body>
-  <header>
-    <img src="https://i.ibb.co/9mBBWjgZ/Dise-o-sin-t-tulo-3-removebg-preview.png" alt="Logo Andina Formaciones" />
-    <h1>Biblioteca Digital Abierta</h1>
-    <p>Visualiza y lee documentos o videos compartidos</p>
-  </header>
 
-  <div class="contenedor">
-    <div class="buscador">
-      <input type="text" id="filterInput" placeholder="Buscar por título..." />
-      <div class="grid" id="libraryGrid"></div>
-    </div>
+<a href="https://andinaformaciones.github.io/instituto/" class="boton-volver">
+  ← Ir a página principal
+</a>
+
+<header>
+<img src="https://i.ibb.co/9mBBWjgZ/Dise-o-sin-t-tulo-3-removebg-preview.png">
+<h1>Biblioteca Digital Abierta</h1>
+<p>Visualiza y lee documentos o videos compartidos</p>
+</header>
+
+<div class="contenedor">
+  <div class="buscador">
+    <input type="text" id="filterInput" placeholder="Buscar por título..." />
+    <div class="grid" id="libraryGrid"></div>
   </div>
+</div>
 
-  <div class="modal" id="modalViewer">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 id="modalTitle"></h3>
-        <div>
-          <button id="openDrive">Abrir en Drive ↗</button>
-          <button id="closeModal">Cerrar ✕</button>
-        </div>
-      </div>
-      <iframe id="modalIframe" allow="autoplay"></iframe>
+<div class="modal" id="modalViewer">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 id="modalTitle"></h3>
+      <button id="closeModal">Cerrar ✕</button>
     </div>
+    <iframe id="modalIframe"></iframe>
   </div>
+</div>
 
-  <footer>© 2026 Andina Formaciones — Biblioteca Digital Abierta</footer>
-
-  <script>
-    const files = [
+<script>
+const files = [
       { id: '1n-aTRB9FcE317bUKrtCGq_bQKg7_g7yT', title: 'Djuna Wojton Sanación Kármica', type: 'pdf' },
       { id: '1PAZbFtCp0O6ZT4oimjFwhNkWag4m7BCi', title: 'La Medicina de la Energía', type: 'pdf' },
       { id: '1uLamsp39q514oCab_ZbHwFUkHQyV_dFS', title: 'Viaje al universo Nauronal', type: 'pdf' },
@@ -318,60 +283,45 @@
       { id: '1KXpr25zf8L03_oxsyrO_BRMWxFn4uP5c', title: 'Tratado de Demonología', type: 'video' }
     ];
 
-    const grid = document.getElementById('libraryGrid');
-    const filterInput = document.getElementById('filterInput');
-    const modal = document.getElementById('modalViewer');
-    const iframe = document.getElementById('modalIframe');
-    const modalTitle = document.getElementById('modalTitle');
-    const openDrive = document.getElementById('openDrive');
-    const closeModal = document.getElementById('closeModal');
+const grid = document.getElementById('libraryGrid');
+const input = document.getElementById('filterInput');
+const modal = document.getElementById('modalViewer');
+const iframe = document.getElementById('modalIframe');
+const closeModal = document.getElementById('closeModal');
+const title = document.getElementById('modalTitle');
 
-    function makeCard(file) {
-      const el = document.createElement('div');
-      el.className = 'card';
-      el.innerHTML = `
-        <div class="thumb ${file.type}">${file.type === 'pdf' ? 'PDF' : 'VIDEO'}</div>
-        <div class="meta">
-          <h3>${file.title}</h3>
-          <p>Vista previa embebida de Google Drive</p>
-        </div>`;
-      el.addEventListener('click', () => openViewer(file));
-      return el;
-    }
-
-    function renderList(list) {
-      grid.innerHTML = '';
-      if (!list.length) {
-        grid.innerHTML = '<p style="color:#ccc;text-align:center;">No se encontraron resultados.</p>';
-        return;
-      }
-      for (const f of list) grid.appendChild(makeCard(f));
-    }
-
-    renderList(files);
-
-    filterInput.addEventListener('input', e => {
-      const q = e.target.value.trim().toLowerCase();
-      const filtered = files.filter(f => f.title.toLowerCase().includes(q));
-      renderList(filtered);
-    });
-
-    function openViewer(file) {
+function render(list){
+  grid.innerHTML='';
+  list.forEach(f=>{
+    const el=document.createElement('div');
+    el.className='card';
+    el.innerHTML=`
+      <div class="thumb ${f.type}">${f.type.toUpperCase()}</div>
+      <div class="meta">
+        <h3>${f.title}</h3>
+        <p>Vista previa embebida</p>
+      </div>`;
+    el.onclick=()=>{
       modal.classList.add('active');
-      iframe.src = `https://drive.google.com/file/d/${file.id}/preview`;
-      modalTitle.textContent = file.title;
-      openDrive.onclick = () => window.open(`https://drive.google.com/file/d/${file.id}/view`, '_blank');
-    }
-
-    closeModal.onclick = () => {
-      modal.classList.remove('active');
-      iframe.src = '';
+      iframe.src=`https://drive.google.com/file/d/${f.id}/preview`;
+      title.textContent=f.title;
     };
+    grid.appendChild(el);
+  });
+}
 
-    modal.addEventListener('click', e => {
-      if (e.target === modal) closeModal.click();
-    });
-  </script>
+render(files);
+
+input.oninput=e=>{
+  const q=e.target.value.toLowerCase();
+  render(files.filter(f=>f.title.toLowerCase().includes(q)));
+};
+
+closeModal.onclick=()=>{
+  modal.classList.remove('active');
+  iframe.src='';
+};
+</script>
+
 </body>
 </html>
-
